@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/acdarroll/pg-connect#readme",
   "dependencies": {
+    "knex": "^0.14.2",
     "pg": "^7.4.0"
   }
 }

@@ -1,5 +1,6 @@
 const pg = require("pg");
 const settings = require("./settings"); // settings.json
+let formatResults = require('./format');
 
 const client = new pg.Client({
   user     : settings.user,
@@ -12,15 +13,6 @@ const client = new pg.Client({
 
 let searchName = process.argv[2];
 let query = "SELECT * FROM famous_people WHERE first_name LIKE $1 OR last_name LIKE $1;";
-
-const formatResults = function (result) {
-  console.log(`Found ${result.length} person(s) by the name '${searchName}:'`);
-    if(result[0]) {
-      result.forEach( (person, i) => {
-        console.log(`- ${ i + 1 }: ${person.first_name} ${person.last_name}, born '${person.birthdate}'`);
-      });
-    }
-};
 
 const findPerson = function(searchName, query) {
   client.connect((err) => {
