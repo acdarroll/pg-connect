@@ -13,35 +13,25 @@ let knex = require('knex')({
 
 let searchName = process.argv[2];
 
-const findPerson = function (searchName) {
-  return new Promise( (resolve, reject) => {
+const findPeople = function (searchName) {
 
-
-    console.log("Searching...");
-    knex.select()
-      .from('famous_people')
-      .where('first_name', searchName)
-      .orWhere('last_name', searchName)
-      .then( (rows) => {
-        resolve(rows[0])
-        //formatResults(rows, searchName);
-        //knex.destroy();
-      })
-  })
- // .then( () => { console.log("Server shut down");
- // }).catch(function(error) {
- //   console.error(error);
- // });
+  console.log("Searching...");
+  return knex.select()
+    .from('famous_people')
+    .where('first_name', searchName)
+    .orWhere('last_name', searchName)
+    .then( (rows) => {
+      knex.destroy();
+      return formatResults(rows, searchName);
+    }).catch(function(error) {
+      console.error(error);
+    });
 };
 
-// app.get('/users/:id', aysnc (req, res) => {
-//   const user = await findPerson(req.params.id)
-//   res.json(user)
-// })
-
-
 if(searchName) {
-  findPerson(searchName);
+  findPeople(searchName).then((result) => {
+    console.log(result);
+  });
 } else {
   console.log("Please give a name to search for");
 }

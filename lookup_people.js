@@ -14,26 +14,30 @@ const client = new pg.Client({
 let searchName = process.argv[2];
 let query = "SELECT * FROM famous_people WHERE first_name LIKE $1 OR last_name LIKE $1;";
 
-const findPerson = function(searchName, query) {
-  client.connect((err) => {
+const findPeople = function(searchName, query) {
+  return new Promise( (resolve, reject) => {
+    client.connect((err) => {
     if (err) {
       return console.error("Connection Error", err);
     }
     console.log('Searching...');
 
-    client.query(query, [searchName], (err, result) => {
-      if (err) {
-        return console.error("error running query", err);
-      }
-      formatResults(result.rows);
+      client.query(query, [searchName], (err, result) => {
+        if (err) {
+          return console.error("error running query", err);
+        }
 
-      client.end();
+        client.end();
+        return resolve(formatResults(result.rows));
+      });
     });
   });
 };
 
 if(searchName) {
-  findPerson(searchName, query);
+  findPeople(searchName, query).then((result) => {
+    console.log("Result:", result);
+  });
 } else {
   console.log("Please give a name to search for");
 }

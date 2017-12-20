@@ -1,4 +1,5 @@
  module.exports = function(result, searchName) {
+
   const padDate = function(date) {
     if(date < 10) {
       date = '0' + date;
@@ -14,10 +15,12 @@
     return `${year}-${padDate(month)}-${padDate(day)}`;
   };
 
-  console.log(`Found ${result.length} person(s) by the name '${searchName}:'`);
-    if(result[0]) {
-      result.forEach( (person, i) => {
-        console.log(`- ${ i + 1 }: ${person.first_name} ${person.last_name}, born '${formatDate(person.birthdate)}'`);
-      });
-    }
+  let results = `Found ${result.length} person(s) by the name '${searchName}:'`;
+  if(result[0]) {
+    result.forEach( (person, i) => {
+      results += `
+- ${ i + 1 }: ${person.first_name} ${person.last_name}, born '${formatDate(person.birthdate)}'`;
+    });
+  }
+  return results;
 };

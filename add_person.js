@@ -17,10 +17,9 @@ const insertPerson = function(firstname, lastname, birthdate) {
     first_name: firstname,
     last_name: lastname,
     birthdate
-  }).then( () => {
+  }).then(() => {
     knex.destroy();
-    console.log("Inesrt successful");
-    console.log("Server shut down");
+    console.log("Insert successful");
   }).catch(function(error) {
     console.error(error);
   });
